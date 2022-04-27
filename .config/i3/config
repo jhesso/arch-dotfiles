@@ -1,0 +1,146 @@
+# Set modifier key
+set $mod Mod1
+
+# Font
+font pango:JetBrains Mono Nerd 12
+
+# Press mod key to resize floating windows
+floating_modifier $mod
+
+# Keybinds:
+# open new terminal
+bindsym $mod+Return exec i3-sensible-terminal
+# close window
+bindsym $mod+Shift+q kill
+# open app launcher
+bindsym $mod+d exec --no-startup-id rofi -show drun -fullscreen
+bindsym $mod+Shift+d exec dmenu_run -fn 'JetBrains Mono Nerd:pixelsize=15' -l 3 -nf '#707880'
+# change focus
+bindsym $mod+Left			focus left
+bindsym $mod+Down			focus down
+bindsym $mod+Up				focus up
+bindsym $mod+Right			focus right
+# move focused window
+bindsym $mod+Shift+Up		move up
+bindsym $mod+Shift+Left		move left
+bindsym $mod+Shift+Down		move down
+bindsym $mod+Shift+Right	move right
+# split in horizontal orientation
+bindsym $mod+h				split h
+# split in vertical orientation
+bindsym $mod+v				split v
+# enter fullscreen mode for the focused container
+bindsym $mod+f				fullscreen toggle
+# toggle tiling / floating
+bindsym $mod+Shift+Space	floating toggle
+# toggle focus between tiling / floating windows
+bindsym $mod+Space			focus mode_toggle
+# focus the parent container
+bindsym $mod+a				focus parent
+# reload the configuration file
+bindsym $mod+Shift+c		reload
+# Restart i3 inplace (preservers layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r		restart
+# exit i3 (logs out of X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes exit i3' 'i3-msg exit'"
+# pulse audio controls
+bindsym $mod+F11 exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym $mod+F10 exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sould volume
+bindsym $mod+F9 exec --no-startup-id pactl set-sink-mute 0 toggle #mute sound
+# media player controls
+bindsym $mod+F7 exec playerctl play toggle
+bindsym $mod+F6 exec playerctl next
+bindsym $mod+F5 exec playerctl previous
+# lock screen
+bindsym $mod+x exec i3lock -c 000000
+
+# Resize window (you can also use the mouse for that)
+mode "resize" {
+	# these bindings trigger as soon as you enter the resize mode
+	# left will shrink the window's width.
+	# right will grow the window's width.
+	# up will shrink the window's height.
+	# down will grow the window's height.
+	bindsym Left	resize shrink	width	5 px or 5 ppt
+	bindsym Down	resize grow		height	5 px or 5 ppt
+	bindsym Up		resize shrink	height	5 px or 5 ppt
+	bindsym Right	resize grow		width	5 px or 5 ppt
+
+	# back to normal: Enter or Escape
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+	status_command i3status
+	mode invisible
+}
+
+# not sure what these next 2 do
+new_window pixel 2
+hide_edge_borders vertical
+
+# Color variables (not used atm)
+set $unfocused_border	#1D1F21
+set $focused_border		#CC6666
+
+# class						border	backgr. text	indicator	child_border
+client.focused				#ffffff #ffffff #ffffff #ffffff		$focused_border
+client.focused_inactive		#ffffff #ffffff #ffffff #ffffff		$focused_border
+client.unfocused			#ffffff	#ffffff #ffffff #ffffff		$unfocused_border
+client.urgent				#ffffff #ffffff #ffffff #ffffff		$focused_border
+client.placeholder			#ffffff #ffffff #ffffff #ffffff #ffffff
+client.background			#ffffff
+
+# apply background image(s)
+exec nitrogen --restore
+
+# execute polybar on launch. script kills current ones on i3 refresh
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# gaps
+gaps inner 7
+
+# picom
+exec picom --no-fading-openclose
+# you can also use any non-zero value if you'd like to have a border
+for_window [class=".*"] border pixel 0
+
+# Workspace settings:
+# name workspaces:
+workspace 1 output DP0
+workspace 2 output DVID0
+workspace 3 output HDMI0
+workspace 4 output DP2
+
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+
+# move to next / previous workspace
+bindsym $mod+n			workspace next
+bindsym $mod+Shift+n	workspace prev
+
+# automatically open certain applications in certain workspaces
+assign [class="Spotify"] number 3 # might not work yet..
+assign [class="discord"] number 2
